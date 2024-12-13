@@ -1,8 +1,8 @@
-31-may-2022
+13-dic-2024
 
 # Emissions conversion system
 
-National Emissions Inventory 2016 is converted in order to be used in air quality modeling. The data has a spatial resolution at municipality level and annual emissions and it is set  into a regular grid.
+National Emissions Inventory 2018 is converted in order to be used in air quality modeling. The data has a spatial resolution at municipality level and annual emissions and it is set  into a regular grid.
 
 It can process all the country or a preselected area from:
 
@@ -18,7 +18,7 @@ It can process all the country or a preselected area from:
 |   | |tijuana |Tijuana City, BC|
 |   | |mexicali | Mexicali City, BC|
 |   | |colima | Colima state |
-
+___
 ## Directories description
 
 - `01_datos` Information for each area containing the grid, surrogates for area emissions
@@ -26,7 +26,7 @@ a subdirectories
     - `chem` with chemical profiles for gases and particles, scaling factor file for each mechanism.
     - `emis` with area, mobile and point emissions at municipality level.
     - `time` with temporal distribution files,
-- `Sources` source codes for processing the EI2016
+- `Sources` source codes for processing the EI2018
     - Area emissions: `area_espacial.F90`, `atemporal.F90`, `agg_a.F90`, `pm25_speci_a.F90`
     - Mobile emissions: `agrega.F90, suma_carretera.F90 suma_vialidades.F90, movil_spatial.F90, movil_temp.F90, agg_m.F90` and` pm25_speci_m.F90`
     - Point emissions: `t_puntal.F90, agg_p.F90, pm25_speci_p.F90`
@@ -36,15 +36,15 @@ a subdirectories
 - `testsuite` code for testing subroutines and functions.
 - `inventario` output subdirectory
 
---
+___
 ## Instalation 
 1. run `configure`
 2. then `make`
 2. and `make install`
 
 ## Running
-1. Use the `emis_2016.sh` script for running
----
+1. Use the `emis_2018.sh` script for running
+___
 ## Sistema de conversión de emisiones
 
 [1.](#desc)  **Descripción del proceso de conversión de emisiones**
@@ -81,7 +81,7 @@ a subdirectories
 
 <a name="desc"></a>
 
----
+___
 ###  Descripción del proceso de conversión de emisiones
 
 La conversión de inventario de emisiones a un inventario útil para modelación se realiza en diferentes pasos que se muestran en la ilustración 1 cada uno de estos pasos es un subdirectorio dentro del directorio principal.
@@ -91,6 +91,7 @@ La conversión de inventario de emisiones a un inventario útil para modelación
 _Figura 1 Esquema general de la conversión de emisiones para modelación de calidad del aire_
 
 <a name="dir-datos"></a>
+___
 ### Directorio  01\_datos
 
 En este directorio se encuentra los subdirectorios de cada una de las áreas del inventario, y de datos de empleados para la distribución temporal. Las áreas que considera son las siguientes:
@@ -137,15 +138,16 @@ Cada archivo posee las siguientes columnas:
 3. Fa – La fracción de área correspondiente a la categoria que representa el archivo.
 
 <a name="time"></a>
+___
 ### Subdirectorio time 
 En el directorio time contiene los siguientes archivos:
 
-  1. anio2016.csv – contiene la fecha y el tipo de día (lun a dom) para cada día del año 2016
-  2. temporal\_01.txt- contiene el código SCC y su correspondiente perfil anual, semanal y horario.
-  3. temporal\_mon.txt – contiene el perfil anual y la proporcion de emisiones mensuales.
-  4. temporal\_week.txt – contiene el perfil semanal y la propocion para cada día de la semana.
-  5. temporal\_wkday.txt – contiene el perfil diario y la proporcion horaria de Lun a vie
-  6. temporal\_wkend.txt - contiene el perfil diario y proporcion horaria de sab y dom.
+  1. anio2018.csv – contiene la fecha y el tipo de día (lun a dom) para cada día del año 2018
+  2. temporal_01.txt- contiene el código SCC y su correspondiente perfil anual, semanal y horario.
+  3. temporal_mon.txt – contiene el perfil anual y la proporcion de emisiones mensuales.
+  4. temporal_week.txt – contiene el perfil semanal y la propocion para cada día de la semana.
+  5. temporal_wkday.txt – contiene el perfil diario y la proporcion horaria de Lun a vie
+  6. temporal_wkend.txt - contiene el perfil diario y proporcion horaria de sab y dom.
 
 Cada archivo posee un encabezado la primera columna corresponde al SCC (para el caso de temporal\_01.txt) y los valores en las siguientes columnas muestran el identificador del perfil anual, semanal y diario. En el temporal\_mon.txt se tiene el identificador anual y luego 13 valores enteros, que representan los valores de emisión mensuales y el último es la suma de lo 12 anteriores, para obtener la fracción de emisión de enero se divide el entero de la segunda columna sobre el valor de la columna 13. En el caso de temporal\_week.txt se tiene en el identificador semanal en la primer columna y ocho columnas con números enteros donde el numero de la segunda columna es del lunes y el último es la suma de los siete anteriores. La fracción temporal del lunes se obtiene de dividir el valor de la segunda columna con el último. El archivo temporal\_wkday.txt la primera columna es el identificador del perfil diario y las 25 columnas siguientes son el valor horario siendo la última la suma de las 24 anteriores. Para obtener la fracción de tiempo de la primera hora se divide el valor de la segunda columna sobre el valor de la columna 26.
 
@@ -155,16 +157,16 @@ los directorios adicionales contienen el inventario de emisiones de fuentes de �
 
 <a name="area"></a>
 ### Directorio emis/area
-- IBC\_\_2016.csv – emisiones de carbono negro
-- ICO\_\_2016.csv – emisiones de monóxido de carbono
-- ICO2\_2016.csv – emisiones de dióxido de carbono
-- imet\_2016.csv – emisiones de metano.
-- INH3\_2016.csv - emisiones de amoníaco
-- INOx\_2016.csv - enisimines de óxidos de nitrógeno
-- IPM10\_2016.csv - emisiones de partículas PM10
-- IPM25\_2016.csv – emisiones de particulas PM2.5
-- ISO2\_2016.csv – emisiones de dióxido de azufre.
-- IVOC\_2016.csv – emisiones de Compuestos Orgánicos Volátiles
+- IBC\_\_2018.csv – emisiones de carbono negro
+- ICO\_\_2018.csv – emisiones de monóxido de carbono
+- ICO2\_2018.csv – emisiones de dióxido de carbono
+- imet\_2018.csv – emisiones de metano.
+- INH3\_2018.csv - emisiones de amoníaco
+- INOx\_2018.csv - enisimines de óxidos de nitrógeno
+- IPM10\_2018.csv - emisiones de partículas PM10
+- IPM25\_2018.csv – emisiones de particulas PM2.5
+- ISO2\_2018.csv – emisiones de dióxido de azufre.
+- IVOC\_2018.csv – emisiones de Compuestos Orgánicos Volátiles
 
 Cada uno de estos archivos contiene por reglón el identificador de municipio CVENTMUN y el código de clasificación de emisiones SCC en cada columna. Asi se tienen 2459 reglones correspondientes a cada municipio del país.
 
@@ -178,7 +180,7 @@ En este directorio se agrupan las fracciones de superficie de área de carretera
 <a name="fijas"></a>
 ### Directorio emis/punt
 
-Contiene las emisiones de fuentes fijas , en el archivo de emisiones `Puntual2016.csv` 
+Contiene las emisiones de fuentes fijas , en el archivo de emisiones `Puntual2018.csv` 
 
 Correspondientes a cada contaminante y para el caso de PM2.5 y VOC se incluye una columna con el código SCC que se emplea para la especiación química.
 
@@ -189,14 +191,14 @@ En este se generan todos los archivos necesarios del inventario distribuido espa
 
 Para las emisiones de área una vez que se ha realizado el proceso de distribución espacial se generan los archivos con las emisiones distribuidas en la región, que son los siguientes:
 
-    ACH4_2016.csv ACO__2016.csv ANH3_2016.csv APM10_2016.csv ASO2_2016.csv
-    ACN__2016.csv ACO2_2016.csv ANOx_2016.csv APM25_2016.csv AVOC_2016.csv
+    ACH4_2018.csv ACO__2018.csv ANH3_2018.csv APM10_2018.csv ASO2_2018.csv
+    ACN__2018.csv ACO2_2018.csv ANOx_2018.csv APM25_2018.csv AVOC_2018.csv
 
 <a name="mobilegrid"></a>
-La distribución espacial de las emisiones de fuentes móviles, emplea el archivo de distribución de vialdiades (salida3.csv)  y el de emisiones emiss\_2016.csv donde la primer columna es el identificador de municipio CVENMUN, la segunda el código de emisión SCC y las subsecuentes son los compuestos emitidos: VOC, CO, NO, NO2, NH3, PM10, PM2.5, CN, CO2, SO2 y CH4. Una vez ejecutado el programa MSpatial.exe se obtienen los archivos con la distribución espacial de las emisiones: 
+La distribución espacial de las emisiones de fuentes móviles, emplea el archivo de distribución de vialdiades (salida3.csv)  y el de emisiones emiss\_2018.csv donde la primer columna es el identificador de municipio CVENMUN, la segunda el código de emisión SCC y las subsecuentes son los compuestos emitidos: VOC, CO, NO, NO2, NH3, PM10, PM2.5, CN, CO2, SO2 y CH4. Una vez ejecutado el programa MSpatial.exe se obtienen los archivos con la distribución espacial de las emisiones: 
 
-    M\_CH4.csv, M\_CN.csv, M\_CO2.csv, M\_CO.csv, M\_NH3.csv, M\_NO2.csv
-    M\_NO.csv, M\_PM10.csv, M\_PM25.csv, M\_SO2.csv, M\_VOC.csv
+    M_CH4.csv, M_CN.csv, M_CO2.csv, M_CO.csv, M_NH3.csv, M_NO2.csv
+    M_NO.csv, M_PM10.csv, M_PM25.csv, M_SO2.csv, M_VOC.csv
     
 <a name="tmparea"></a>
 ### Directorio tmp[area]/dia[dia]
@@ -206,22 +208,23 @@ En este directorio se encuentran los archivos con la distribución temporal de l
 
 <a name="arealtime"></a>
 #### Emisiones de área
-     TACH4\_2016.csv TACO\_\_2016.csv TANH3\_2016.csv TAPM102016.csv 
-     TASO2\_2016.csv TACN\_\_2016.csv TACO2\_2016.csv TANOx\_2016.csv
-     TAPM2\_2016.csv y TAVOC\_2016.csv
+
+     TACH4_2018.csv TACO__2018.csv TANH3_2018.csv TAPM102018.csv 
+     TASO2_2018.csv TACN__2018.csv TACO2_2018.csv TANOx_2018.csv
+     TAPM2_2018.csv y TAVOC_2018.csv
 
 Correspondientes a cada contaminante y para el caso de PM2.5 y VOC se incluye una columna con el código SCC que se emplea para la especiación química.
 
 <a name="mobiltime"></a>
 #### Emisiones de fuentes móviles
-Los archivos que corresponden a la distribución temporal de las emisiones de fuentes móviles mediante el programa `Mtemporal.exe`, que emplea como entrada los archivos del directorio `tmp[area]` y los archvios que contienen los perfiles temporales (`01\_datos/time`), los archivos de salida que genera son: 
-`TMCH4\_2016.csv, TMCO\_\_2016.csv, TMCOV\_2016.csv, TMNO\_\_2016.csv, TMPM102016.csv, TMSO2\_2016.csv, TMCN\_\_2016.csv, TMCO2\_2016.csv, TMNH3\_2016.csv, TMNO2\_2016.csv` y `TMPM2\_2016.csv.`
+Los archivos que corresponden a la distribución temporal de las emisiones de fuentes móviles mediante el programa `Mtemporal.exe`, que emplea como entrada los archivos del directorio `tmp[area]` y los archvios que contienen los perfiles temporales (`01_datos/time`), los archivos de salida que genera son: 
+`TMCH4_2018.csv, TMCO__2018.csv, TMCOV_2018.csv, TMNO__2018.csv, TMPM102018.csv, TMSO2_2018.csv, TMCN__2018.csv, TMCO2_2018.csv, TMNH3_2018.csv, TMNO2_2018.csv` y `TMPM2_2018.csv.`
 
 Correspondientes a cada contaminante y para el caso de PM2.5 y COV se incluye una columna con el código SCC que se emplea para la especiación química.
 
 <a name="especies"></a>
+___
 #### Especiación de emisiones
-
 
 En este directorio tambien contiene la especiación química de los VOC para luego agruparlos en el mecanismo químico solicitado. Emplea como entradas los archivos de emisiones de VOC del directorio ` tmp[area]`. Los perfiles de especiacion con base al código SCC del archivo `scc-profiles.txt` y el del mecanismo químico que puede ser alguno de los siguientes:
 
@@ -269,6 +272,7 @@ Fuentes puntuales:
     RADM-2_TOL_P.txt
 
 <a name="pm25"></a>
+___
 ### Especiacion de PM25
 
 Este directorio contiene los archivos con la especiación de PM2.5 emplea los archivos de emisiones de PM2.5 generados despues de la distribución espacial. Los perfiles de especiacion con base al código SCC del archivo scc-profile\_pm25.csv y del especiación pm25\_profiles.csv. Se emplean tres programas, uno para cada tipo de fuente asi:
@@ -300,10 +304,10 @@ Y fuentes fijas:
 <a name="guarda"></a>
 ### Directorio inventario/[area]
 
-En este se crea el archivo de salida en formato netcdf con los archivos generados en los procesos anteriores. Se ejecuta el programa `emiss.exe` que tiene como salida el archivo correspondiente al área y mecanismos seleccionados así tenemos como ejemplos para Cd Juárez y Mexicali con el mecanismo RADM2 y para abril 30 del 2016:
+En este se crea el archivo de salida en formato netcdf con los archivos generados en los procesos anteriores. Se ejecuta el programa `emiss.exe` que tiene como salida el archivo correspondiente al área y mecanismos seleccionados así tenemos como ejemplos para Cd Juárez y Mexicali con el mecanismo RADM2 y para abril 30 del 2018:
 
-      wrfchemi_d01_radm2_cdjuarez_2016-04-30_00:00:00
-      wrfchemi_d01_radm2_mexicali_2016-04-30_00:00:00
+      wrfchemi_d01_radm2_cdjuarez_2018-04-30_00:00:00
+      wrfchemi_d01_radm2_mexicali_2018-04-30_00:00:00
 
 
 
@@ -311,7 +315,7 @@ En este se crea el archivo de salida en formato netcdf con los archivos generado
 <a name="script"></a>
 ## Proceso de ejecución
 
-En el directorio principal emis\_2016 se edita el script emis\_2016.sh
+En el directorio principal emis\_2018 se edita el script emis\_2018.sh
 
   1. Selección del área a la variable dominio se le asigna el nombre del área de interés
 
@@ -343,7 +347,7 @@ Se selecciona el día inicial  __dia__ y final __dia2__. Se selecciona el año e
   
           # Aqui cambiar el año a modelar
           #
-          nyear=2016
+          nyear=2018
           #
   5. Se selecciona si se quiere un archivo o dos archivos por día en la variable: `nfile`
 
@@ -352,7 +356,7 @@ Se selecciona el día inicial  __dia__ y final __dia2__. Se selecciona el año e
           nfile=2
 
   1. Si para el periodo es durante el horario de verano y no se desea que se realice el cambio de horario se cambia la variable `lsummer` de `.true.` a `.false.` en el scrip `functions.sh`  en donde aparece linea 53.
-  2. Se ejecuta el script bash emis\_2016.sh
+  2. Se ejecuta el script bash emis\_2018.sh
   3. Los resultados se encuetran en el directorio `inventario/[area]`
 <a name="anexo1"></a>
 
@@ -373,7 +377,7 @@ La siguiente tabla muestra el tamaño de las salidas para cada área considerand
 | Tijuana | 42 MB |
 
 [1]: La superficie de _bosque_ representa **todo** tipo de vegetación en la celda que no es agrícola.
-
+___
 ### CHIMERE
 El sistema puede generar las salidas en el formato para el modelo [CHIMERE] [2]  cambios son:
 1. los nombres de las variables 
