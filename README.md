@@ -9,6 +9,7 @@ It can process all the country or a preselected area from:
 |9 km grid| 3 km grid| 1 km grid|Description|
 |---      |---       |---     |---|
 | mexico9 | mexico   | | All the country|
+|         | mexicoC  | | Central Mexico |
 |         | jalisco  |guadalajara| State and city|
 |         |monterrey3|monterrey|Saltillo-MTY, MTY|
 |         |ecaim3    | ecaim | Central Mexico |
