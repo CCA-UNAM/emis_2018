@@ -29,17 +29,17 @@ MECHA=radm2
 AQM_SELECT=1
 #  Build the namelist_emis.nml file
 # Cambiar aqui la fecha
-mes=5
-dia=11
-dia2=12
+mes=10
+dia=30
+dia2=31
 #
 #    Aqui cambiar el año a modelar
 #
-nyear=2024
+nyear=2018
 #
 #   Si se desea un archivo de 24 hrs  nfile=1
 #              dos archivos de 12 hrs nfile=2
-nfile=2
+nfile=1
 
 #####  END OF USER MODIFICATIONS  #####
 source functions.sh

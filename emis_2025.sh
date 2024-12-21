@@ -6,8 +6,8 @@
 #: Version     : 1.0  13/12/2024 Actualizacion para IE del 2018
 #: Description : Programa de emisiones con funciones
 #: Options     : None
-#SBATCH -J emi_2025
-#SBATCH -o emi_2025%j.o
+#SBATCH -J emi_2018
+#SBATCH -o emi_2018%j.o
 #SBATCH -n 4
 #SBATCH --ntasks-per-node=24
 #SBATCH -p id
@@ -16,9 +16,9 @@
 #   guadalajara  jalisco    mexicali  mexico  mexico9
 #   monterrey    monterrey3 queretaro tijuana
 #
-dominio=tijuana
+dominio=mexicoC
 # To set spatial distribution = 1 else =0
-HacerArea=1
+HacerArea=0
 #
 # Mechanism selcetion
 # avalable:
@@ -29,17 +29,17 @@ MECHA=radm2
 AQM_SELECT=1
 #  Build the namelist_emis.nml file
 # Cambiar aqui la fecha
-mes=5
-dia=11
-dia2=12
+mes=12
+dia=21
+dia2=23
 #
 #    Aqui cambiar el año a modelar
 #
-nyear=2025
+nyear=2024
 #
 #   Si se desea un archivo de 24 hrs  nfile=1
 #              dos archivos de 12 hrs nfile=2
-nfile=2
+nfile=1
 
 #####  END OF USER MODIFICATIONS  #####
 source functions.sh
