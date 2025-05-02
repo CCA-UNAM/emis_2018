@@ -13,7 +13,7 @@
 &SCALE
     scala( 1)=2.6 ;scalm( 1)=0.5 ;scalp( 1)=0.5 !CO
     scala( 2)=1.0 ;scalm( 2)=1.0 ;scalp( 2)=1.0 !NH3
-    scala( 3)=.18 ;scalm( 3)=0.1 ;scalp( 3)=1.2 !NO
+    scala( 3)=.13 ;scalm( 3)=0.1 ;scalp( 3)=1.2 !NO
     scala( 4)=0.1 ;scalm( 4)=0.00005 ;scalp( 4)=0.4 !NO2
     scala( 5)=1.25 ;scalm( 5)=0.85 ;scalp( 5)=0.4!SO2
     scala( 6)=1.0 ;scalm( 6)=1.0 ;scalp( 6)=1.0 !CH4

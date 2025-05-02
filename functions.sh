@@ -3,7 +3,7 @@
 #: Title       : functions.sh
 #: Date        : 02/01/2024
 #: Author      : "Jose Agustin Garcia Reynoso" <agustin@atmosfera.unam.mx>
-#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2016
+#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2018
 #: Description : Functios to run emissions
 #: Options     : None
 
@@ -56,7 +56,7 @@ mv anio${anio1}.csv ../time
 #: Title       : make_tmpdir
 #: Date        : 25/04/2021
 #: Author      : "Jose Agustin Garcia Reynoso" <agustin@atmosfera.unam.mx>
-#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2016
+#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2018
 #: Description : Creates the working directory for emissions
 #: Options     : name of directory
 make_tmpdir ()
@@ -72,7 +72,7 @@ else
      mkdir $1
    else
           echo "  hacearea="$HacerArea
-     if [ ! -f $1/AVOC_2016.csv ];then
+     if [ ! -f $1/AVOC_2018.csv ];then
        echo -e "     \033[1;45m There is no Spatial Distribution \033[0m"
        exit 2
      fi
@@ -90,7 +90,7 @@ fi
 #: Title       : hace_area
 #: Date        : 25/04/2021
 #: Author      : "Jose Agustin Garcia Reynoso" <agustin@atmosfera.unam.mx>
-#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2016
+#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2018
 #: Description : Apatial distribution area emissions
 #: Options     : none
 
@@ -104,7 +104,7 @@ fi
 #: Title       : hace_movil
 #: Date        : 25/04/2021
 #: Author      : "Jose Agustin Garcia Reynoso" <agustin@atmosfera.unam.mx>
-#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2016
+#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2018
 #: Description : Spatial distribution mobile emissions
 #: Options     : none
 hace_movil(){
@@ -120,7 +120,7 @@ fi
 #: Title       : emis_area
 #: Date        : 25/04/2021
 #: Author      : "Jose Agustin Garcia Reynoso" <agustin@atmosfera.unam.mx>
-#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2016
+#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2018
 #: Description : Area emissions processing
 #: Options     : none
 emis_area(){
@@ -136,7 +136,7 @@ echo '** Area '$MECHA' *****'
 #: Title       : emis_fijas
 #: Date        : 25/04/2021
 #: Author      : "Jose Agustin Garcia Reynoso" <agustin@atmosfera.unam.mx>
-#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2016
+#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2018
 #: Description : Point emissions processing
 #: Options     : none
 emis_fijas(){
@@ -152,7 +152,7 @@ echo '** Point '$MECHA' *****'
 #: Title       : emis_movil
 #: Date        : 25/04/2021
 #: Author      : "Jose Agustin Garcia Reynoso" <agustin@atmosfera.unam.mx>
-#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2016
+#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2018
 #: Description : Movile emissions processing
 #: Options     : none
 emis_movil(){
@@ -167,7 +167,7 @@ echo '** Movil '$MECHA' *****'
 #: Title       : check_domain
 #: Date        : 25/04/2021
 #: Author      : "Jose Agustin Garcia Reynoso" <agustin@atmosfera.unam.mx>
-#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2016
+#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2018
 #: Description : Identifies if the domain are for emissions exists
 #: Options     : domain
 check_domain ()
@@ -191,7 +191,7 @@ cd ..
 #: Title       : hace_namelist
 #: Date        : 25/04/2021
 #: Author      : "Jose Agustin Garcia Reynoso" <agustin@atmosfera.unam.mx>
-#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2016
+#: Version     : 1.0  26/04/2021 Actualizacion para IE del 2018
 #: Description : generates the namelist.nml
 #: Options     : $dia $dia2
 hace_namelist()

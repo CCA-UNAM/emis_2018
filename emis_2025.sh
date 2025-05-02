@@ -16,7 +16,7 @@
 #   guadalajara  jalisco    mexicali  mexico  mexico9
 #   monterrey    monterrey3 queretaro tijuana
 #
-dominio=mexicoC
+dominio=ecacor
 # To set spatial distribution = 1 else =0
 HacerArea=0
 #
@@ -29,13 +29,13 @@ MECHA=radm2
 AQM_SELECT=1
 #  Build the namelist_emis.nml file
 # Cambiar aqui la fecha
-mes=12
-dia=21
-dia2=23
+mes=04
+dia=29
+dia2=30
 #
 #    Aqui cambiar el año a modelar
 #
-nyear=2024
+nyear=2025
 #
 #   Si se desea un archivo de 24 hrs  nfile=1
 #              dos archivos de 12 hrs nfile=2
