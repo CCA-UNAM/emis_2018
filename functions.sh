@@ -244,5 +244,7 @@ limpiar_archivos_viejos() {
     if [ -f "$fayer1" ] || [ -f "$fayer2" ]; then
         echo "Borrando archivos de ayer: ${ayear}-${ames}-${ayer}"
         rm -f "$fayer1" "$fayer2"
+    else
+       echo "No se encontraron archivos en ${DOMAINS}/interpolaD01"
     fi
 }
