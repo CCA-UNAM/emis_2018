@@ -16,9 +16,9 @@
 #   guadalajara  jalisco    mexicali  mexico  mexico9
 #   monterrey    monterrey3 queretaro tijuana
 #
-dominio=mexicoC
+dominio=queretaro
 # To set spatial distribution = 1 else =0
-HacerArea=1
+HacerArea=0
 #
 # Mechanism selcetion
 # avalable:
@@ -30,7 +30,7 @@ AQM_SELECT=1
 #  Build the namelist_emis.nml file
 # Cambiar aqui la fecha
 mes=10
-dia=30
+dia=31
 dia2=31
 #
 #    Aqui cambiar el año a modelar
@@ -50,11 +50,13 @@ make_tmpdir tmp$dominio
 
 hace_namelist $dia $dia
 
-hace_area &
-
-hace_movil
-
-wait
+if [ $HacerArea -ne 0 ]; then
+    hace_area &
+    hace_movil
+    wait
+    export HacerArea=0 # Resetear la variable para no repetir el proceso
+    echo -e "${COLOR_SUCCESS}Distribución espacial completada.${COLOR_RESET}"
+fi
 
 #
 # Starts Loop for Time
@@ -68,6 +70,7 @@ else
    mkdir dia$dia
    cd dia$dia
 fi
+fecha_str="${nyear}-${mes}-${dia}"
 hace_namelist $dia -$dia
 echo "Working Directory "$PWD
 
@@ -80,7 +83,7 @@ emis_fijas &
 emis_movil &
 
 wait
-
+    echo "Combinando emisiones y generando archivo final..."
 ln -fs ../chem/namelist.* .
 ../bin/emiss.exe  > ../${MECHA}.log
 if [ ! -d ../../inventario/${dominio} ]
@@ -90,6 +93,6 @@ fi
     mv *00\:00 ../../inventario/${dominio}
 
 cd ..
-echo -e "     \033[1;44m  DONE STORING "$MECHA $dia "\033[0m"
+echo -e "${COLOR_SUCCESS}---> Día $fecha_str procesado exitosamente. $MECHA ${COLOR_RESET}"
  let dia=dia+1
 done
