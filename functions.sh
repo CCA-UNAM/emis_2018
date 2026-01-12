@@ -239,8 +239,8 @@ limpiar_archivos_viejos() {
     local ayer=$(date -d "-1 days" +%d)
     local ames=$(date -d "-1 days" +%m)
     local ayear=$(date -d "-1 days" +%Y)
-    local fayer1="${DOMAINS}/interpolaD01/wrfchemi_d01_${MECHA}_${dominio}_${ayear}-${ames}-${ayer}_00:00:00"
-    local fayer2="${DOMAINS}/interpolaD01/wrfchemi_d01_${MECHA}_${dominio}_${ayear}-${ames}-${ayer}_12:00:00"
+    local fayer1="${DOMAINS}/interpolaD01/wrfchemi_d01_${MECHA}_${dominio:0:8}_${ayear}-${ames}-${ayer}_00:00:00"
+    local fayer2="${DOMAINS}/interpolaD01/wrfchemi_d01_${MECHA}_${dominio:0:8}_${ayear}-${ames}-${ayer}_12:00:00"
     if [ -f "$fayer1" ] || [ -f "$fayer2" ]; then
         echo "Borrando archivos de ayer: ${ayear}-${ames}-${ayer}"
         rm -f "$fayer1" "$fayer2"
