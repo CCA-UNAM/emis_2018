@@ -99,7 +99,7 @@ procesar_dia_pronostico() {
     local fecha_str="${nyear}-${mes}-${dia}"
     echo -e "\n${COLOR_INFO}--- Procesando día: $etiqueta_dia ($fecha_str) ---${COLOR_RESET}"
 
-    local archivo_salida="${DOMAINS}/interpolaD01/wrfchemi_d01_${MECHA}_${dominio}_${fecha_str}_00:00:00"
+    local archivo_salida="${DOMAINS}/interpolaD01/wrfchemi_d01_${MECHA}_${dominio:0:8}_${fecha_str}_00:00:00"
     if [ -f "$archivo_salida" ]; then
         echo -e "${COLOR_WARNING}---> Archivo de salida ya existe. Saltando día.${COLOR_RESET}"
         return
