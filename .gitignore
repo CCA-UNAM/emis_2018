@@ -8,6 +8,7 @@ a.out
 salida*
 *.log
 *.xlsx
+.DS_Store
 .tmpfile
 libnetcdf*
 Makefile
