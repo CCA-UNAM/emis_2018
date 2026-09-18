@@ -10,6 +10,7 @@ bin_PROGRAMS += Puntual.exe
 bin_PROGRAMS += spa.exe spm.exe spp.exe
 bin_PROGRAMS += spm25a.exe spm25m.exe spm25p.exe
 bin_PROGRAMS += emiss.exe
+bin_PROGRAMS += Fanual.exe Manual.exe Aanual.exe
 
 # Compiler flags
   FC =$(NC_FC)
@@ -50,3 +51,7 @@ spm25m_exe_SOURCES = e_pm25_mod.F90 master_mod.F90 pm25_speci_m.F90
 spm25p_exe_SOURCES = e_pm25_mod.F90 master_mod.F90 pm25_speci_p.F90
 # Storage
 emiss_exe_SOURCES = check.F90 master_mod.F90 g_emis2.F90
+# Annual Emissions in netcdf files
+Aanual_exe_SOURCES = check.F90 master_mod.F90 areaanual.F90 
+Fanual_exe_SOURCES = check.F90 master_mod.F90 f_anual.F90 
+Manual_exe_SOURCES = check.F90 master_mod.F90 movil_anual.F90 
