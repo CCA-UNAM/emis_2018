@@ -5,7 +5,12 @@
 !>   @date  04/23/2021
 !>   @version  3.0
 !>   @copyright Universidad Nacional Autonoma de Mexico 2021
-
+!                      _
+!  _ __ ___   __ _ ___| |_ ___ _ __
+! | '_ ` _ \ / _` / __| __/ _ \ '__|
+! | | | | | | (_| \__ \ ||  __/ |
+! |_| |_| |_|\__,_|___/\__\___|_|
+!
 module master
 ;!> model ID for output 0=WRF 1=CHIMERE 2=CMAQ
 integer :: model!> day in emissions output file
@@ -19,8 +24,10 @@ integer,dimension(12) :: daym ! days in a month
 integer,dimension(2014:2022) :: inicia ! dia inicial del horario de verano
 !> end day for summer time period for years 2014 to 2020
 integer,dimension(2014:2022) :: termina  ! dia fin del horario de verano
-character(len=12):: zona!> Photochemical mechanism selected in namelist_emis.nml
-character (len=19) ::  mecha
+!> emissions area selected
+character(len=12):: zona   ! area de emisiones a estimar
+!> Photochemical mechanism selected in namelist_emis.nml
+character (len=19) ::  mecha  ! mecanismo quimico seleccionado
 !> during summer period  consider timasvaing .true. or not .false.
 logical :: lsummer
 ! number of day in a month
@@ -86,9 +93,8 @@ implicit none
     print '(A,I2,A,I2)','Error in day value: ',idia,' larger than days in month ',daym(month)
     stop
   end if
-if ((anio.gt.2022 .or. anio.lt.2014).and.lsummer )then
+if (lsummer .and. (anio.gt.2022 .or. anio.lt.2014) )then
   print '(A,I2,A,I2)','Error in anio value: ',anio,' not between 2014 to 2022 ',daym(month)
-  print *,"LSUMMER=",lsummer
   stop
 end if
 
@@ -142,4 +148,34 @@ end subroutine lee_namelist
     end if
 233 format("******  HORARIO de VERANO *******",/,3x,"Abril ",I2,x,"a Octubre ",I2)
 end function
+!            _                        _ _   _
+!  __ _  ___| |_      _ __   ___  ___(_) |_(_) ___  _ __
+! / _` |/ _ \ __|    | '_ \ / _ \/ __| | __| |/ _ \| '_ \
+!| (_| |  __/ |_     | |_) | (_) \__ \ | |_| | (_) | | | |
+! \__, |\___|\__|____| .__/ \___/|___/_|\__|_|\___/|_| |_|
+! |___/        |_____|_|
+!>  @brief Seach the position by column and row in the grid by cell number the grid contains colum x row ids
+!>   @author  D. Herrera Moro
+!>   @date  10/12/2022
+!>   @version  1.0
+!>   @copyright Universidad Nacional Autonoma de Mexico 2020
+!>   @param cell   grid id number
+!>   @param ncol   grid column number
+!>   @param row    grid row id
+!>   @param col    grid column id
+subroutine get_position( cell,ncol, row, col)
+    implicit none
+    integer*8, intent(in) :: cell !>  column total number in the grid
+    integer  ,intent(in)  :: ncol !>  row in the grid corresponding to cell
+    integer, intent(out):: row    !>  column in the grid corresponding to cell
+    integer, intent(out):: col
+    row = cell/ncol
+    col = mod(cell,ncol)
+    if (col.eq.0 .and. row.ne.0) col=ncol
+    if (col.ne.ncol.or. row.eq.0) then
+         row=row+1
+    end if
+
+end subroutine
+
 end module master
