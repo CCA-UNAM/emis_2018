@@ -1,10 +1,36 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
-# ARCHIVO:      functions.sh (Revisado con nuevas funciones)
+#: Title       : functions.sh
+#: Date        : 12/07/2025
+#: Author      : "Jose Agustin Garcia Reynoso" <agustin@atmosfera.unam.mx>
+#: Version     : 3.0 Actualizacion para IE del 2018
+#: Description : Biblioteca de funciones de shell para procesar emisiones.
+#              : Incluye una función para verificar la salida de cada programa
+#              : y detener la ejecución en caso de error.
 #
-# DESCRIPCIÓN:  Biblioteca de funciones de shell para procesar emisiones.
-#               Incluye una función para verificar la salida de cada programa
-#               y detener la ejecución en caso de error.
+# COMPATIBILIDAD MULTIPLATAFORMA (Linux / macOS):
+#               El comando `date` de GNU/Linux (coreutils) y el `date` nativo
+#               de macOS (BSD) NO comparten la misma sintaxis para fechas
+#               relativas ni para parsear fechas arbitrarias:
+#
+#                 GNU/Linux:  date -d "2024-03-05" "+%a"
+#                             date -d "+1 days"    "+%Y"
+#                             date -d "-1 days"    "+%m"
+#
+#                 macOS/BSD:  date -j -f "%Y-%m-%d" "2024-03-05" "+%a"
+#                             date -v+1d            "+%Y"
+#                             date -v-1d            "+%m"
+#
+#               Para evitar duplicar lógica en cada función, este archivo
+#               define `date_compat()`, un wrapper que detecta el sistema
+#               operativo (`uname`) y traduce la llamada al dialecto correcto.
+#               Todas las funciones de este archivo usan `date_compat` en
+#               lugar de invocar `date -d` directamente.
+#
+#               Alternativa recomendada en macOS: instalar GNU coreutils
+#               vía Homebrew (`brew install coreutils`), lo que provee
+#               `gdate` con sintaxis GNU idéntica a Linux. Si `gdate` está
+#               disponible en el PATH, `date_compat` lo usará automáticamente
+#               y evita la traducción de sintaxis (más robusto).
 # -----------------------------------------------------------------------------
 
 # --- Definición de Códigos de Color ---
@@ -13,6 +39,98 @@ COLOR_SUCCESS='\033[0;32m'
 COLOR_WARNING='\033[1;33m'
 COLOR_ERROR='\033[1;41m'
 COLOR_RESET='\033[0m'
+
+# =============================================================================
+# FUNCIÓN: date_compat (NUEVA)
+#
+# Propósito:   Wrapper multiplataforma sobre `date` que oculta las diferencias
+#              de sintaxis entre GNU/Linux (coreutils) y macOS (BSD).
+#
+# Modos de uso:
+#   date_compat offset <±N> <formato>
+#       Calcula una fecha relativa a HOY en días y la formatea.
+#       Equivale a: date -d "+N days" "+formato"   (GNU)
+#                   date -v+Nd        "+formato"   (BSD)
+#       Ejemplos:
+#         date_compat offset 1  "+%Y"   # mañana, año en formato YYYY
+#         date_compat offset -1 "+%d"   # ayer, día del mes
+#
+#   date_compat parse <AAAA/MM/DD o AAAA-MM-DD> <formato>
+#       Parsea una fecha arbitraria (no relativa a hoy) y la formatea.
+#       Equivale a: date -d "$fecha" "+formato"               (GNU)
+#                   date -j -f "%Y-%m-%d" "$fecha" "+formato" (BSD)
+#       Ejemplo:
+#         date_compat parse "2024/03/05" "+%a"   # día de la semana abreviado
+#
+#   date_compat valid <AAAA/MM/DD o AAAA-MM-DD>
+#       Solo valida que la fecha exista (sin imprimir nada).
+#       Devuelve código de salida 0 si es válida, distinto de 0 si no.
+#
+# Detección de plataforma:
+#   - Si existe `gdate` en el PATH (GNU coreutils instalado vía Homebrew en
+#     macOS), se usa directamente con sintaxis GNU: es la opción más fiable.
+#   - Si `uname` reporta "Darwin" y no hay `gdate`, se traduce a sintaxis BSD.
+#   - En cualquier otro caso (Linux y similares), se usa `date -d` (GNU).
+# =============================================================================
+date_compat() {
+    local modo="$1"; shift
+
+    # Preferir gdate (GNU coreutils) si está disponible, sin importar el OS.
+    local DATE_BIN="date"
+    if command -v gdate &>/dev/null; then
+        DATE_BIN="gdate"
+    fi
+
+    local es_macos_bsd=0
+    if [ "$DATE_BIN" = "date" ] && [ "$(uname)" = "Darwin" ]; then
+        es_macos_bsd=1
+    fi
+
+    case "$modo" in
+        offset)
+            local valor="$1" formato="$2"
+            if [ "$es_macos_bsd" -eq 1 ]; then
+                # BSD: date -v+Nd / date -v-Nd (sin espacio entre signo y número)
+                if [[ "$valor" == -* ]]; then
+                    date -v"${valor}d" "$formato"
+                else
+                    date -v+"${valor}d" "$formato"
+                fi
+            else
+                # GNU (Linux o gdate en macOS): date -d "+N days" / "-N days"
+                if [[ "$valor" == -* ]]; then
+                    "$DATE_BIN" -d "${valor} days" "$formato"
+                else
+                    "$DATE_BIN" -d "+${valor} days" "$formato"
+                fi
+            fi
+            ;;
+        parse)
+            local fecha="$1" formato="$2"
+            # Normaliza separadores '/' a '-' para máxima compatibilidad.
+            local fecha_normalizada="${fecha//\//-}"
+            if [ "$es_macos_bsd" -eq 1 ]; then
+                # BSD requiere el formato de entrada explícito con -f.
+                date -j -f "%Y-%m-%d" "$fecha_normalizada" "$formato"
+            else
+                "$DATE_BIN" -d "$fecha_normalizada" "$formato"
+            fi
+            ;;
+        valid)
+            local fecha="$1"
+            local fecha_normalizada="${fecha//\//-}"
+            if [ "$es_macos_bsd" -eq 1 ]; then
+                date -j -f "%Y-%m-%d" "$fecha_normalizada" &>/dev/null
+            else
+                "$DATE_BIN" -d "$fecha_normalizada" &>/dev/null
+            fi
+            ;;
+        *)
+            echo -e "${COLOR_ERROR} ERROR (date_compat): modo '$modo' no reconocido. Usa: offset | parse | valid ${COLOR_RESET}"
+            return 1
+            ;;
+    esac
+}
 
 # =============================================================================
 # FUNCIÓN: run_and_check (NUEVA)
@@ -92,9 +210,12 @@ procesar_dia_pronostico() {
         *) echo "Offset inválido"; return;;
     esac
 
-    export dia=$(date -d "+$offset days" +%d)
-    export mes=$(date -d "+$offset days" +%m)
-    export nyear=$(date -d "+$offset days" +%Y)
+    # Compatibilidad: usa `date_compat offset` en lugar de `date -d "+N days"`,
+    # que es sintaxis GNU/Linux y falla en macOS (BSD). Ver definición de
+    # date_compat al inicio de este archivo.
+    export dia=$(date_compat offset "$offset" +%d)
+    export mes=$(date_compat offset "$offset" +%m)
+    export nyear=$(date_compat offset "$offset" +%Y)
     
     local fecha_str="${nyear}-${mes}-${dia}"
     echo -e "\n${COLOR_INFO}--- Procesando día: $etiqueta_dia ($fecha_str) ---${COLOR_RESET}"
@@ -181,13 +302,15 @@ crea_anio_csv() {
     if [ $# -eq 3 ]; then
         anio="$1"; mes="$2"; dia="$3"
         fecha="$anio/$mes/$dia"
-        # Validar si la fecha es correcta
-        if ! date -d"$fecha" &>/dev/null; then
+        # Validar si la fecha es correcta.
+        # Compatibilidad: date_compat encapsula la diferencia entre
+        # `date -d` (GNU) y `date -j -f` (BSD/macOS) en una sola llamada.
+        if ! date_compat valid "$fecha"; then
             echo -e "${COLOR_ERROR} ERROR: La fecha '$fecha' no es válida. ${COLOR_RESET}"; exit 1
         fi
         
         # Obtener el día de la semana (0=Domingo, 1=Lunes, ..., 6=Sábado)
-        local dow=$(date -d"$fecha" "+%w")
+        local dow=$(date_compat parse "$fecha" "+%w")
         
         # Si es Domingo (0), cambiar su valor a 7 como se requiere.
         if [ "$dow" -eq 0 ]; then
@@ -195,9 +318,9 @@ crea_anio_csv() {
         fi
         
         # Obtener el resto de los componentes de la fecha
-        local mes_csv=$(date -d"$fecha" "+%m")
-        local dia_csv=$(date -d"$fecha" "+%d")
-        local nomdia_csv=$(date -d"$fecha" "+%a")
+        local mes_csv=$(date_compat parse "$fecha" "+%m")
+        local dia_csv=$(date_compat parse "$fecha" "+%d")
+        local nomdia_csv=$(date_compat parse "$fecha" "+%a")
 
         # Reconstruir la línea con el día de la semana corregido (formato: mes,dia,n_dia_semana,nomdia_semana)
         local linea="${mes_csv},${dia_csv},${dow},${nomdia_csv}"
@@ -236,9 +359,11 @@ End_Of_File
 }
 
 limpiar_archivos_viejos() {
-    local ayer=$(date -d "-1 days" +%d)
-    local ames=$(date -d "-1 days" +%m)
-    local ayear=$(date -d "-1 days" +%Y)
+    # Compatibilidad: se calcula la fecha de "ayer" con date_compat en vez
+    # de `date -d "-1 days" ...`, por lo que funciona igual en Linux y macOS.
+    local ayer=$(date_compat offset -1 +%d)
+    local ames=$(date_compat offset -1 +%m)
+    local ayear=$(date_compat offset -1 +%Y)
     local fayer1="${DOMAINS}/interpolaD01/wrfchemi_d01_${MECHA}_${dominio:0:8}_${ayear}-${ames}-${ayer}_00:00:00"
     local fayer2="${DOMAINS}/interpolaD01/wrfchemi_d01_${MECHA}_${dominio:0:8}_${ayear}-${ames}-${ayer}_12:00:00"
     if [ -f "$fayer1" ] || [ -f "$fayer2" ]; then

@@ -14,9 +14,9 @@
 # Emissions area avalable:
 #   bajio bajio3 cdjuarez   colima    ecacor  ecaim ecaim3
 #   guadalajara  jalisco    mexicali  mexico  mexico9
-#   monterrey    monterrey3 queretaro tijuana
+#   monterrey    monterrey3 queretaro tijuana centro
 #
-dominio=queretaro
+dominio=centro
 # To set spatial distribution = 1 else =0
 HacerArea=0
 #

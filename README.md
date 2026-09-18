@@ -1,4 +1,4 @@
-13-dic-2024
+07-ago-2026
 
 # Emissions conversion system
 
@@ -9,7 +9,7 @@ It can process all the country or a preselected area from:
 |9 km grid| 3 km grid| 1 km grid|Description|
 |---      |---       |---     |---|
 | mexico9 | mexico   | | All the country|
-|         | mexicoC  | | Central Mexico |
+|         | centro   | | Centro de México: del Pacífico (costa de Nayarit/Jalisco) al Golfo (mitad de Tabasco), de la costa de Oaxaca al límite norte de Guanajuato |
 |         | jalisco  |guadalajara| State and city|
 |         |monterrey3|monterrey|Saltillo-MTY, MTY|
 |         |ecaim3    | ecaim | Central Mexico |
@@ -100,18 +100,19 @@ En este directorio se encuentra los subdirectorios de cada una de las áreas del
 1. bajio – área correspondiente al estado de Guanajuato 1x1 km
 2. bajio3 – área correspondiente al estado de Guanajuato 3x3 km
 3. cdjuarez – la ciudad fronteriza de Chihuahua 1x1 km
-4. colima – es todo el estado de Colima 1x1 km
-5. ecaim – Centro de México . 1x1 km
-6. ecaim3 - Centro de México 3x3 km
-7. guadalajara – Zona Metropolitana de Guadalajara 1x1 km
-8. jalisco -    Estado de Jalisco 3x3 km
-9. mexicali – Ciudad fronteriza de BC 1x1 km
-10. mexico – Toda la república mexicana 3x3 km
-11. mexico9 – Toda la república mexicana 9x9 km 
-12. monterrey - Zona metropolitana de Monterrey 1x1 km
-13. monterrey3 - Zona metropolitana de Monterrey y Saltillo  3x3 km
-14. queretaro - estado de Queretaro a 3x3 km
-15. tijuana – Zona metropolitana de Tijuana 1x1 km
+4. centro – Centro de México, dominio 3x3 km que abarca del Pacífico (costa de Nayarit/Jalisco) al Golfo (a la mitad de Tabasco), y de la costa de Oaxaca al límite norte del estado de Guanajuato
+5. colima – es todo el estado de Colima 1x1 km
+6. ecaim – Centro de México . 1x1 km
+7. ecaim3 - Centro de México 3x3 km
+8. guadalajara – Zona Metropolitana de Guadalajara 1x1 km
+9. jalisco -    Estado de Jalisco 3x3 km
+10. mexicali – Ciudad fronteriza de BC 1x1 km
+11. mexico – Toda la república mexicana 3x3 km
+12. mexico9 – Toda la república mexicana 9x9 km 
+13. monterrey - Zona metropolitana de Monterrey 1x1 km
+14. monterrey3 - Zona metropolitana de Monterrey y Saltillo  3x3 km
+15. queretaro - estado de Queretaro a 3x3 km
+16. tijuana – Zona metropolitana de Tijuana 1x1 km
 
 Cada uno de estos subdirectorios contiene los archivos para la distribución espacial de las emisiones en la malla que considera el área de estudio correspondiente, los archivos que contiene se describen a continuación:
 
@@ -321,7 +322,7 @@ En el directorio principal emis\_2018 se edita el script emis\_2018.sh
   1. Selección del área a la variable dominio se le asigna el nombre del área de interés
 
          # Selecciona area de modelacion
-         # bajio bajio3 cdjuarez   colima    ecacor  ecaim ecaim3
+         # bajio bajio3 cdjuarez   centro    colima  ecacor  ecaim ecaim3
          # guadalajara  jalisco    mexicali  mexico  mexico9
          # monterrey    monterrey3 queretaro tijuana
          #
@@ -369,6 +370,7 @@ La siguiente tabla muestra el tamaño de las salidas para cada área considerand
 | --- |  --:|
 | Bajío | 1.6 GB |
 | Cd Juárez | 51 MB |
+| Centro | 2.8 GB |
 | Colima | 333 MB |
 | Centro de México (Ecaim) | 2.4 GB |
 | Guadalajara | 59 MB |
@@ -385,4 +387,4 @@ El sistema puede generar las salidas en el formato para el modelo [CHIMERE] [2] 
 2. las unidades en molecules s-1 cm-2
 3. El nombre del archivo de salida inicia con:  __AEMISSIONS.saprc...__
 
-[2]: https://www.lmd.polytechnique.fr/chimere/2020_getcode.php  
+[2]: https://www.lmd.polytechnique.fr/chimere/2020_getcode.php
