@@ -1,16 +1,19 @@
 #
 # This file is processed by automake (produces file Makefile.in)
+# Cofiguration file for emis_2018
 #
 bin_PROGRAMS = ASpatial.exe
+bin_PROGRAMS += Aanual.exe
 bin_PROGRAMS += carr.exe vial.exe agrega.exe
 bin_PROGRAMS += Atemporal.exe
 bin_PROGRAMS += MSpatial.exe
+bin_PROGRAMS += Mannual.exe
 bin_PROGRAMS += Mtemporal.exe
 bin_PROGRAMS += Puntual.exe
+bin_PROGRAMS += Panual.exe
 bin_PROGRAMS += spa.exe spm.exe spp.exe
 bin_PROGRAMS += spm25a.exe spm25m.exe spm25p.exe
 bin_PROGRAMS += emiss.exe
-bin_PROGRAMS += Fanual.exe Manual.exe Aanual.exe
 
 # Compiler flags
   FC =$(NC_FC)
@@ -33,25 +36,26 @@ CLEANFILES = *.o *.mod *~
 ASpatial_exe_SOURCES = master_mod.F90 area_espacial.F90
 Atemporal_exe_SOURCES = master_mod.F90 atemporal.F90
 # Mobile  spatial allocation
-carr_exe_SOURCES = master_mod.F90 suma_carretera.F90
-vial_exe_SOURCES = master_mod.F90 suma_vialidades.F90
-agrega_exe_SOURCES    = agrega.F90
+carr_exe_SOURCES = master_mod.F90 mobile_mod.F90 suma_carretera.F90
+vial_exe_SOURCES = master_mod.F90 mobile_mod.F90 suma_vialidades.F90
+agrega_exe_SOURCES    = master_mod.F90 mobile_mod.F90 agrega.F90
 #
-MSpatial_exe_SOURCES  = movil_spatial.F90
+MSpatial_exe_SOURCES  = sort_uniq.F90 movil_spatial.F90
 Mtemporal_exe_SOURCES = check.F90 master_mod.F90 movil_temp.F90
 # Point emissions temporal
 Puntual_exe_SOURCES   = master_mod.F90 t_puntal.F90
 # Gas Chemical speciation
-spa_exe_SOURCES = agg_mod.F90 master_mod.F90 agg_a.F90
-spm_exe_SOURCES = agg_mod.F90 master_mod.F90 agg_m.F90
-spp_exe_SOURCES = agg_mod.F90 master_mod.F90 agg_p.F90
+spa_exe_SOURCES = sort_uniq.F90 agg_mod.F90 master_mod.F90 agg_a.F90
+spm_exe_SOURCES = sort_uniq.F90 agg_mod.F90 master_mod.F90 agg_m.F90
+spp_exe_SOURCES = sort_uniq.F90 agg_mod.F90 master_mod.F90 agg_p.F90
 # Particle speciation
-spm25a_exe_SOURCES = e_pm25_mod.F90 master_mod.F90 pm25_speci_a.F90
-spm25m_exe_SOURCES = e_pm25_mod.F90 master_mod.F90 pm25_speci_m.F90
-spm25p_exe_SOURCES = e_pm25_mod.F90 master_mod.F90 pm25_speci_p.F90
+spm25a_exe_SOURCES = sort_uniq.F90 e_pm25_mod.F90 master_mod.F90 pm25_speci_a.F90
+spm25m_exe_SOURCES = sort_uniq.F90 e_pm25_mod.F90 master_mod.F90 pm25_speci_m.F90
+spm25p_exe_SOURCES = sort_uniq.F90 e_pm25_mod.F90 master_mod.F90 pm25_speci_p.F90
 # Storage
 emiss_exe_SOURCES = check.F90 master_mod.F90 g_emis2.F90
+
 # Annual Emissions in netcdf files
-Aanual_exe_SOURCES = check.F90 master_mod.F90 areaanual.F90 
-Fanual_exe_SOURCES = check.F90 master_mod.F90 f_anual.F90 
-Manual_exe_SOURCES = check.F90 master_mod.F90 movil_anual.F90 
+Aanual_exe_SOURCES = check.F90 master_mod.F90 areaanual.F90
+Panual_exe_SOURCES  = check.F90 master_mod.F90 f_anual.F90
+Mannual_exe_SOURCES = check.F90 master_mod.F90 movil_anual.F90
