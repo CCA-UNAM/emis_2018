@@ -4,7 +4,7 @@
 !   ifort -O3 -axAVX areaanual.F90 -o Aanual.exe
 !   -c -parallel -guide
 !  -parallel -Dtest_gap -opt-report=1 -opt-report-phase=par -opt-report-file=stdout atemporal.F90
-! gfortran -DPGI  -fopenmp -O2 atemporal.F90 -o Atemporal.exe
+! gfortran -DPGI  -fopenmp -O2 atemporal.F90 -o Aanual.exe
 !
 !> @brief For areaanual.F90 program. Read annual area emissions and save in netcdf file per pollutant 2018.
 !>
