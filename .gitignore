@@ -49,3 +49,15 @@ Informe_19072017.docx
 Inventario.Data
 Especiacion_2.xlsx
 SCCDownload-2017-0728-091707.csv
+.DS_Store
+/autom4te.cache
+config.log
+config.status
+Makefile
+Makefile.in
+Sources/Makefile
+Sources/Makefile.in
+Sources/testsuite/atconfig
+Sources/testsuite/Makefile
+Sources/testsuite/Makefile.in
+.DS_Store
