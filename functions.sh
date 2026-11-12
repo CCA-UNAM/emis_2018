@@ -146,9 +146,38 @@ run_and_check() {
     local exit_code=$? # Captura el código de salida del comando anterior.
     
     if [ $exit_code -ne 0 ]; then
-        echo -e "${COLOR_ERROR}ERROR: El comando '$*' falló con el código de salida $exit_code. Abortando.${COLOR_RESET}"
-        # Salir del script con el mismo código de error del programa que falló.
+        echo -e "${COLOR_ERROR}ERROR: El comando '$*' falló con el código de salida $exit_code. Abortando.${COLOR_RESET}" >&2
+        # Salir con el mismo código de error del programa que falló.
+        # Nota: si se ejecuta en segundo plano (&), esto termina solo ese
+        # subshell; el proceso principal debe usar wait_all para detectarlo.
         exit $exit_code
+    fi
+}
+
+# =============================================================================
+# FUNCIÓN: wait_all
+#
+# Propósito:   Espera a que terminen varios procesos en segundo plano y aborta
+#              el script si alguno falló (wait sin PID ignora los errores).
+# Uso:         tarea1 & p1=$!
+#              tarea2 & p2=$!
+#              wait_all "nombre1:$p1" "nombre2:$p2"
+# =============================================================================
+wait_all() {
+    local item nombre pid rc falla=0
+    for item in "$@"; do
+        nombre="${item%%:*}"
+        pid="${item##*:}"
+        wait "$pid"
+        rc=$?
+        if [ $rc -ne 0 ]; then
+            echo -e "${COLOR_ERROR}ERROR: la tarea '$nombre' (PID $pid) falló con código $rc.${COLOR_RESET}" >&2
+            falla=$rc
+        fi
+    done
+    if [ $falla -ne 0 ]; then
+        echo -e "${COLOR_ERROR}Abortando por fallo en tareas paralelas.${COLOR_RESET}" >&2
+        exit $falla
     fi
 }
 
@@ -161,37 +190,39 @@ run_and_check() {
 # =============================================================================
 hace_area() {
     echo "Ejecutando distribución espacial para fuentes de área..."
-    run_and_check bin/ASpatial.exe > ./area.log
+    run_and_check bin/ASpatial.exe > ./espacial_area.log 2>&1
 }
 
 hace_movil() {
     echo "Ejecutando distribución espacial para fuentes móviles..."
-    run_and_check bin/vial.exe > ./movil.log
-    run_and_check bin/carr.exe >> ./movil.log
-    run_and_check bin/agrega.exe >> ./movil.log
-    run_and_check bin/MSpatial.exe >> ./movil.log
+    run_and_check bin/vial.exe > ./espacial_movil.log 2>&1
+    run_and_check bin/carr.exe >> ./espacial_movil.log 2>&1
+    run_and_check bin/agrega.exe >> ./espacial_movil.log 2>&1
+    run_and_check bin/MSpatial.exe >> ./espacial_movil.log 2>&1
 }
 
+# Los logs diarios llevan el día en el nombre para no sobrescribirse
+# entre días ni con los logs de la distribución espacial.
 emis_area() {
     echo "Procesando emisiones de ÁREA (Temporal y Especiación)..."
     ln -fs ../chem/profile_${MECHA}.csv .
-    run_and_check ../bin/Atemporal.exe > ../area.log
-    run_and_check ../bin/spm25a.exe >> ../area.log
-    run_and_check ../bin/spa.exe >> ../area.log
+    run_and_check ../bin/Atemporal.exe > ../area_${dia}.log 2>&1
+    run_and_check ../bin/spm25a.exe >> ../area_${dia}.log 2>&1
+    run_and_check ../bin/spa.exe >> ../area_${dia}.log 2>&1
 }
 
 emis_fijas() {
     echo "Procesando emisiones de FUENTES FIJAS (Temporal y Especiación)..."
-    run_and_check ../bin/Puntual.exe > ../puntual.log
-    run_and_check ../bin/spm25p.exe >> ../puntual.log
-    run_and_check ../bin/spp.exe >> ../puntual.log
+    run_and_check ../bin/Puntual.exe > ../puntual_${dia}.log 2>&1
+    run_and_check ../bin/spm25p.exe >> ../puntual_${dia}.log 2>&1
+    run_and_check ../bin/spp.exe >> ../puntual_${dia}.log 2>&1
 }
 
 emis_movil() {
     echo "Procesando emisiones MÓVILES (Temporal y Especiación)..."
-    run_and_check ../bin/Mtemporal.exe > ../movil.log
-    run_and_check ../bin/spm25m.exe >> ../movil.log
-    run_and_check ../bin/spm.exe >> ../movil.log
+    run_and_check ../bin/Mtemporal.exe > ../movil_${dia}.log 2>&1
+    run_and_check ../bin/spm25m.exe >> ../movil_${dia}.log 2>&1
+    run_and_check ../bin/spm.exe >> ../movil_${dia}.log 2>&1
 }
 
 # =============================================================================
@@ -312,7 +343,7 @@ crea_anio_csv() {
         # Obtener el día de la semana (0=Domingo, 1=Lunes, ..., 6=Sábado)
         local dow=$(date_compat parse "$fecha" "+%w")
         
-        # Si es Domingo (0), cambiar su valor a 7 como se requiere.
+        # Sábado y domingo comparten el valor 6 (fin de semana), como se requiere.
         if [ "$dow" -eq 0 ]; then
             dow=6
         fi
